@@ -27,3 +27,14 @@ export function getInterview(state, interview) {
   interviewInfo.interviewer = interviewerInfo;
   return interviewInfo;
 }
+
+export function getInterviewersForDay(state, day) {
+  const filteredDay = state.days.filter(curDay => curDay.name === day);
+  if (!state.days.length|| !state.days || !filteredDay.length) {
+    return [];
+  }
+  const interviewersIdArray = filteredDay[0].interviewers;
+  const interviewersArray = Object.values(state.interviewers)
+  const interviewersForDay = interviewersArray.filter(interviewer => interviewersIdArray.includes(interviewer.id));
+  return interviewersForDay;
+}
