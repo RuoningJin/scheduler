@@ -43,7 +43,7 @@ export default function Appointment (props) {
   }
 
   return (
-    <article className="appointment">
+    <article data-testid="appointment" className="appointment">
       <Header time={props.time}/>
       {mode === ERROR_DELETE && <Error onClose={back} message='Could not delete appointment.'/>}
       {mode === ERROR_SAVE && <Error onClose={back} message='Could not save appointment.'/>}

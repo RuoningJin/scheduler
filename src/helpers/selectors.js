@@ -38,3 +38,14 @@ export function getInterviewersForDay(state, day) {
   const interviewersForDay = interviewersArray.filter(interviewer => interviewersIdArray.includes(interviewer.id));
   return interviewersForDay;
 }
+
+export function updateSpots(state, appointments) {
+
+  const dayInfo = state.days.find(day => day.name === state.day);
+
+  const spots = dayInfo.appointments.filter((id => !appointments[id].interview)).length;
+
+  const newDays = state.days.map(day => day.name === state.day ? {...dayInfo, spots} : day);
+
+  return newDays;
+};

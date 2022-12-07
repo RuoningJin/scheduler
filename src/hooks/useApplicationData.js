@@ -1,5 +1,6 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
+import { updateSpots } from "helpers/selectors";
 
 export default function useApplicationData (initial) {
 
@@ -22,12 +23,7 @@ export default function useApplicationData (initial) {
       [id]: appointment
     };
 
-    const dayInfo = state.days.filter((day) => day.name.includes(state.day))[0];
-    const appointmentsByDay = Object.values(appointments).filter(appointment => dayInfo.appointments.includes(appointment.id));
-    const spots = appointmentsByDay.filter((appointment => !appointment.interview)).length;
-    dayInfo.spots = spots;
-    const days = state.days;
-    days[dayInfo.id - 1] = dayInfo;
+    const newDays = updateSpots(state, appointments)
 
     return axios.put(`/api/appointments/${id}`, {
       interview
@@ -36,7 +32,7 @@ export default function useApplicationData (initial) {
       setState({
         ...state,
         appointments,
-        days
+        days: newDays
       })
     })
   }
@@ -51,23 +47,30 @@ export default function useApplicationData (initial) {
       [id]: appointment
     };
 
-    const dayInfo = state.days.filter((day) => day.name.includes(state.day))[0];
-    const appointmentsByDay = Object.values(appointments).filter(appointment => dayInfo.appointments.includes(appointment.id));
-    const spots = appointmentsByDay.filter((appointment => !appointment.interview)).length;
-    dayInfo.spots = spots;
-    const days = state.days;
-    days[dayInfo.id - 1] = dayInfo;
-    
+    const newDays = updateSpots(state, appointments)
+
     return axios.delete(`/api/appointments/${id}`)
     .then(() => {
       setState({
         ...state,
         appointments,
-        days
+        days: newDays
       }); 
     })
   }
   
+
+  useEffect(() => {
+    Promise.all([
+      axios.get('/api/days'),
+      axios.get('/api/appointments'),
+      axios.get('/api/interviewers')
+    ])
+      .then((all) => {
+        setState(prev => ({ ...prev, days: all[0].data, appointments: all[1].data, interviewers: all[2].data }));
+      });
+  }, [setState]);
+
   return {state, setState, setDay, bookInterview, cancelInterview};
 }
 
