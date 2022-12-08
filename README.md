@@ -35,5 +35,5 @@ npm run storybook
 
 ## Final Product
 
-!["screenshot of the page"](https://github.com/RuoningJin/tweeter/blob/master/docs/mobile-version.png?raw=true)
-!["screenshot of appointment booking"](https://github.com/RuoningJin/tweeter/blob/master/docs/desktop-version.png?raw=true)
+!["screenshot of the page"](https://github.com/RuoningJin/scheduler/blob/main/docs/Screen%20Shot%202022-12-08%20at%201.55.56%20AM.png?raw=true)
+!["screenshot of appointment booking"](https://github.com/RuoningJin/scheduler/blob/main/docs/Screen%20Shot%202022-12-08%20at%201.56.18%20AM.png?raw=true)
